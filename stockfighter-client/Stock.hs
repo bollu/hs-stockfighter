@@ -1,5 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Stock  where
+module Stock(
+  Stock(..),
+  StockList(..),
+  StockSymbol
+)  where
 import Data.Aeson
 import Control.Applicative
 

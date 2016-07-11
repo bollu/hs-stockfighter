@@ -34,7 +34,7 @@ data Orderbook = Orderbook {
   bids :: [Bid],
   asks :: [Ask],
   timestamp :: UTCTime
-} deriving(Generic, Show)
+} deriving(Show)
 
 instance FromJSON Orderbook where
   parseJSON(Object o) = 

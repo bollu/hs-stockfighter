@@ -55,14 +55,15 @@ library
                       transformers,
                       http-client,
                       http-client-tls,
-                      time
+                      time,
+                      lens,
+                      lens-aeson
 
-  exposed-modules: Stockfighter,
-                   Heartbeat,
-                   Orderbook,
-                   Stock,
-                   StockOrder,
-                   Venue
+  exposed-modules: Stockfighter
+                   -- Orderbook,
+                   -- Stock,
+                   -- StockOrder,
+                   -- Venue
 
   hs-source-dirs: stockfighter-client
   
@@ -90,7 +91,9 @@ executable stockfighter
                        http-client,
                        http-client-tls,
                        time,
-                       stockfighter-client
+                       stockfighter-client,
+                       lens,
+                       vinyl
 
   -- Directories containing source files.
   -- hs-source-dirs:      

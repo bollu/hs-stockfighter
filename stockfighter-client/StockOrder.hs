@@ -1,8 +1,15 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards  #-}
-module StockOrder where
+module StockOrder(
+  OrderDirection(..),
+  OrderType(..),
+  TradingAccount(..),
+  StockOrderData(..),
+  StockOrderConformation(..)
+) where
 import Data.Aeson
 import Control.Applicative 
+import Data.Time(UTCTime)
 import Venue
 import Stock
 
@@ -40,11 +47,34 @@ instance ToJSON StockOrderData where
             "direction" .= show direction,
             "orderType" .= show orderType]
    
+data Fill = Fill {
+  fillPrice :: Int,
+  fillQty :: Int,
+ fillTimestamp :: UTCTime
+}
+
+instance FromJSON Fill where
+  parseJSON(Object o) =
+    Fill <$> o .: "price"
+         <*> o .: "qty"
+         <*> o .: "ts"
+
 data StockOrderConformation = StockOrderConformation {
-  
+  originalQty :: Int,
+  outstandingQty :: Int,
+  id :: Int,
+  timestamp :: UTCTime,
+  fills :: [Fill],
+  totalFilled :: Int,
+  open :: Bool
 }
 
 instance FromJSON StockOrderConformation where
-  parseJSON(Object o) = return StockOrderConformation
-
-
+  parseJSON(Object o) = 
+    StockOrderConformation <$> o .: "originalQty"
+                <*> o .: "qty"
+                <*> o .: "id"
+                <*> o .: "timestamp"
+                <*> o .: "fills"
+                <*> o .: "totalFilled"
+                <*> o .: "open"

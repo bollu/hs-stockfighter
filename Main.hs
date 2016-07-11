@@ -3,6 +3,7 @@
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RecordWildCards #-}
+{-# LANGUAGE DisambiguateRecordFields  #-}
 
 import Control.Applicative
 import Control.Monad
@@ -25,15 +26,27 @@ import qualified Data.Text.IO as T
 
 import Stockfighter
 
+apikey_acc = "97ef11d3dc636c4e54142ac3f29c3cf8815bdcec"
+apikey = "98b71aa87e3bbf50016e97d7bb0117872dfc4258"
+
+account = TradingAccount "HAH20152510"
+venue = "YXHPEX"
+stock = "HDS"
+
 main :: IO ()
 main = do
-  manager <- newManager tlsManagerSettings
-  result <- runExceptT (getHeartbeat manager stockfighterBaseUrl)
-  print $ result
-  result <- runExceptT ((getVenueHeartbeat "TESTEX") manager stockfighterBaseUrl)
-  print $ result
-  result <- runExceptT ((getVenueStocksList "TESTEX") manager stockfighterBaseUrl)
-  print $ result
-  result <- runExceptT ((getStockOrderbook "TESTEX" "FOOBAR") manager stockfighterBaseUrl)
+  sfctx <- makeSfCtx  account apikey venue
+  result <- runExceptT $ getAPIHeartbeat sfctx
   print $ result
 
+  result <-  runExceptT $ getVenueHeartbeat sfctx
+  print $ result
+
+  result <- runExceptT $  getStockList sfctx
+  print $ result
+
+  result <- runExceptT $  getOrderbook sfctx stock
+  print $ result
+
+  result <- runExceptT $  placeStockOrder sfctx stock 5142 1 Buy Market
+  print $ result
