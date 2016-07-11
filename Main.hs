@@ -35,18 +35,18 @@ stock = "HDS"
 
 main :: IO ()
 main = do
-  sfctx <- makeSfCtx  account apikey venue
-  result <- runExceptT $ getAPIHeartbeat sfctx
-  print $ result
+    sfctx <- makeSfCtx  account apikey venue
+    result <- runExceptT $ getAPIHeartbeat sfctx
+    print $ result
 
-  result <-  runExceptT $ getVenueHeartbeat sfctx
-  print $ result
+    result <-  runExceptT $ getVenueHeartbeat sfctx
+    print $ result
 
-  result <- runExceptT $  getStockList sfctx
-  print $ result
+    result <- runExceptT $  getStockList sfctx
+    print $ result
 
-  result <- runExceptT $  getOrderbook sfctx stock
-  print $ result
+    result <- runExceptT $  getOrderbook sfctx stock
+    print $ result
 
-  result <- runExceptT $  placeStockOrder sfctx stock 5142 1 Buy Market
-  print $ result
+    result <- runExceptT $  placeStockOrder sfctx stock 5142 1 Buy Market
+    print $ result
